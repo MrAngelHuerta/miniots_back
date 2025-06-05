@@ -23,6 +23,8 @@ urlpatterns = [
     # Aquí agregamos la app `user`
     path('api/', include('user.urls')),  
 
+    path('api/contactanos/', include('contactanos.urls')), 
+
     # Documentación automática
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
