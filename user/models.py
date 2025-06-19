@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class Usuario(AbstractUser):
+    EMAIL_FIELD='correo'
+    REQUIRED_FIELDS = ['correo']
     ROLES = (
         ('admin', 'Admin'),
         ('administrador', 'Administrador'),

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@(wid-7bjan=_n&wwz8dv6l_hcwfpnn4rsw*$oij%p!7szz7q)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'user',
     'contactanos',
+    'corsheaders',
 
 ]
 
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'otsback.urls'
@@ -140,4 +142,12 @@ SIMPLE_JWT = {
 }
 
 AUTH_USER_MODEL = 'user.Usuario'
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "otsback.backends.EmailOrUsernameBackend",
+]
+
 
