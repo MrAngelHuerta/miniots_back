@@ -1,31 +1,22 @@
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import permissions
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
-
-schema_view = get_schema_view(
-   openapi.Info(
-      title="Ots - ApiDoc",
-      default_version='v1',
-      description="Test description",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="koriaanonimo@gmail.com"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
-)
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from user.api.router import router_user
+from contactanos.router import router_contacto
+from user.api.views import (UserView)
 
 urlpatterns = [
+    path("auth/login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("auth/me/", UserView.as_view()),
+    path("auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+    "docs/",
+    SpectacularSwaggerView.as_view(url_name="schema"),
+    name="swagger-ui",
+    ),
+    path("user/", include(router_user.urls)),
+    path("contacto/", include(router_contacto.urls)),
     path('admin/', admin.site.urls),
-    
-    # Aquí agregamos la app `user`
-    path('api/', include('user.urls')),  
-
-    path('api/contactanos/', include('contactanos.urls')), 
-
-    # Documentación automática
-    path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]

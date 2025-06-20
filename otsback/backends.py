@@ -5,11 +5,15 @@ Usuario = get_user_model()
 
 class EmailOrUsernameBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
-        #Diferenciacion de logueo entre email y username
         user = None
+        if username is None or password is None:
+            return None
+        
+        # Diferenciar login por email o username
         if '@' in username:
             try:
-                user = Usuario.objects.get(correo=username)
+                # Cambia 'correo' por 'email' si es ese el campo correcto
+                user = Usuario.objects.get(email=username)
             except Usuario.DoesNotExist:
                 return None
         else:
@@ -18,7 +22,8 @@ class EmailOrUsernameBackend(ModelBackend):
             except Usuario.DoesNotExist:
                 return None
 
-        # Validar contraseña
-        if user and user.check_password(password):
+        # Validar contraseña y si el usuario puede autenticarse (activo)
+        if user and user.check_password(password) and self.user_can_authenticate(user):
             return user
+
         return None
