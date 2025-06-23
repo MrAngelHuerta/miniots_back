@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from django.db import transaction
 from rest_framework import status
 from django.contrib.auth.hashers import make_password
+from rest_framework.permissions import AllowAny
 
 from user.models import Usuario
 from user.api.serializers import UsuarioSerializer
@@ -12,6 +13,7 @@ from user.api.serializers import UsuarioSerializer
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
+    permission_classes = [AllowAny]
     
     @transaction.atomic
     def create(self, request, *args, **kwargs):

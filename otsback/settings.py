@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-@(wid-7bjan=_n&wwz8dv6l_hcwfpnn4rsw*$oij%p!7szz7q)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -59,12 +59,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
 
@@ -72,7 +72,7 @@ ROOT_URLCONF = 'otsback.urls'
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Mini OTS API",
-    "DESCRIPTION": "Descripcion api koria",
+    "DESCRIPTION": "Sistema de Observatorio",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
 }
@@ -80,7 +80,7 @@ SPECTACULAR_SETTINGS = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        "DIRS": [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,9 +128,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-ES'
+LANGUAGE_CODE = "es-ES"
 
-TIME_ZONE = 'America/Mexico_City'
+TIME_ZONE = "America/Mexico_City"
 
 USE_I18N = True
 
@@ -147,10 +147,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 AUTHENTICATION_BACKENDS = [
-    "otsback.backends.EmailOrUsernameBackend",
     "django.contrib.auth.backends.ModelBackend",
+    "otsback.backends.EmailOrUsernameBackend",
 ]
 
 SIMPLE_JWT = {
@@ -160,6 +159,15 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = 'user.Usuario'
 
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
+MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware'] + MIDDLEWARE
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+# O para desarrollo rápido y menos restrictivo (no recomendado para producción)
+# CORS_ALLOW_ALL_ORIGINS = True
 
 
